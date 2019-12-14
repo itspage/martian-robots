@@ -13,7 +13,7 @@ import (
 func main() {
 	info, err := os.Stdin.Stat()
 	if err != nil {
-		panic(err)
+		log.Fatalf("Error stating stdin: %v", err)
 	}
 
 	if info.Mode()&os.ModeCharDevice != 0 || info.Size() <= 0 {
@@ -38,7 +38,7 @@ func main() {
 
 	output, err := cli.Output()
 	if err != nil {
-		log.Fatalf("Error creating output, %v", output)
+		log.Fatalf("Error creating output: %v", output)
 	}
 
 	for _, o := range output {
