@@ -13,12 +13,14 @@ const (
 )
 
 // CLI exposes the martian packages as a command line interface
+// a CLI initialised with CLI{} is ready to use
 type CLI struct {
 	grid         *martian.Grid
 	robots       []*martian.Robot
 	currentRobot *martian.Robot
 }
 
+// ReadLine takes a line of input and processes it
 func (c *CLI) ReadLine(line string) error {
 	// If no grid - assume first line and create
 	if c.grid == nil {
