@@ -6,7 +6,15 @@ Coding challenge.
 
 Results are written to stdout.
 
+# Requirements
+
+Go 1.13+
+
 # Usage
 
-`go install ./cmd/martian-robots`
-`cat samples/sample_1.txt | martian-robots`
+Assuming that `$GOROOT/bin` is in your `$PATH`:
+
+```
+go install ./cmd/martian-robots
+cat samples/sample_1.txt | martian-robots
+```
