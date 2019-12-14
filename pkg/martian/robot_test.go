@@ -1,37 +1,35 @@
-package martian_test
+package martian
 
 import (
 	"testing"
-
-	"github.com/itspage/martian-robots/pkg/martian"
 )
 
 func TestRobotString(t *testing.T) {
 	tests := []struct {
 		name  string
-		robot martian.Robot
+		robot Robot
 		want  string
 	}{
 		{
 			name: "found robot",
-			robot: martian.Robot{
-				Position: martian.Coordinates{
-					X: 2,
-					Y: 3,
+			robot: Robot{
+				position: Coordinates{
+					x: 2,
+					y: 3,
 				},
-				Orientation: martian.OrientationSouth,
+				orientation: OrientationSouth,
 			},
 			want: "2 3 S",
 		},
 		{
 			name: "lost robot",
-			robot: martian.Robot{
-				Position: martian.Coordinates{
-					X: 3,
-					Y: 3,
+			robot: Robot{
+				position: Coordinates{
+					x: 3,
+					y: 3,
 				},
-				Orientation: martian.OrientationNorth,
-				Lost:        true,
+				orientation: OrientationNorth,
+				lost:        true,
 			},
 			want: "3 3 N LOST",
 		},

@@ -1,14 +1,14 @@
 package martian
 
 type Coordinates struct {
-	X int
-	Y int
+	x int
+	y int
 }
 
 type Grid struct {
 	width      int
 	height     int
-	lostCoords []Coordinates
+	lostScents map[Coordinates]struct{}
 }
 
 func NewGrid(width, height int) (*Grid, error) {

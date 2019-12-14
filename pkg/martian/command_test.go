@@ -17,23 +17,114 @@ func TestCommands(t *testing.T) {
 		wantGrid  *Grid
 	}{
 		{
-			name: "F",
+			name: "L (N->W)",
 			grid: &Grid{
 				width:  5,
 				height: 5,
 			},
 			robot: &Robot{
-				Position:    Coordinates{0, 0},
-				Orientation: OrientationNorth,
+				position:    Coordinates{0, 0},
+				orientation: OrientationNorth,
 			},
-			command: CommandForward,
+			command: CommandLeft,
 			wantRobot: &Robot{
-				Position:    Coordinates{0, 1},
-				Orientation: OrientationNorth,
+				position:    Coordinates{0, 0},
+				orientation: OrientationWest,
 			},
 			wantGrid: &Grid{
 				width:  5,
 				height: 5,
+			},
+		},
+		{
+			name: "R (N->E)",
+			grid: &Grid{
+				width:  5,
+				height: 5,
+			},
+			robot: &Robot{
+				position:    Coordinates{0, 0},
+				orientation: OrientationNorth,
+			},
+			command: CommandRight,
+			wantRobot: &Robot{
+				position:    Coordinates{0, 0},
+				orientation: OrientationEast,
+			},
+			wantGrid: &Grid{
+				width:  5,
+				height: 5,
+			},
+		},
+		// TODO: Test turning from all orientations
+		{
+			name: "F (OK)",
+			grid: &Grid{
+				width:  5,
+				height: 5,
+			},
+			robot: &Robot{
+				position:    Coordinates{0, 0},
+				orientation: OrientationNorth,
+			},
+			command: CommandForward,
+			wantRobot: &Robot{
+				position:    Coordinates{0, 1},
+				orientation: OrientationNorth,
+			},
+			wantGrid: &Grid{
+				width:  5,
+				height: 5,
+			},
+		},
+		{
+			name: "F (gets lost)",
+			grid: &Grid{
+				width:  5,
+				height: 5,
+			},
+			robot: &Robot{
+				position:    Coordinates{5, 5},
+				orientation: OrientationNorth,
+			},
+			command: CommandForward,
+			wantRobot: &Robot{
+				position:    Coordinates{5, 5},
+				orientation: OrientationNorth,
+				lost:        true,
+			},
+			wantGrid: &Grid{
+				width:  5,
+				height: 5,
+				lostScents: map[Coordinates]struct{}{
+					Coordinates{5, 5}: struct{}{},
+				},
+			},
+		},
+		{
+			name: "F (avoids getting lost, scent)",
+			grid: &Grid{
+				width:  5,
+				height: 5,
+				lostScents: map[Coordinates]struct{}{
+					Coordinates{5, 5}: struct{}{},
+				},
+			},
+			robot: &Robot{
+				position:    Coordinates{5, 5},
+				orientation: OrientationNorth,
+			},
+			command: CommandForward,
+			wantRobot: &Robot{
+				position:    Coordinates{5, 5},
+				orientation: OrientationNorth,
+			},
+			wantGrid: &Grid{
+				width:  5,
+				height: 5,
+				lostScents: map[Coordinates]struct{}{
+					Coordinates{5, 5}: struct{}{},
+				},
 			},
 		},
 	}

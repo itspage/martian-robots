@@ -9,10 +9,10 @@ import (
 
 func TestMartianRobots(t *testing.T) {
 	tests := []struct {
-		name    string
-		input   []string
-		want    []string
-		wantErr error
+		name     string
+		input    []string
+		want     []string
+		wantErrs []error
 	}{
 		{
 			name: "sample",
@@ -38,7 +38,18 @@ func TestMartianRobots(t *testing.T) {
 				"1 1 E",
 				"RRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRRR",
 			},
-			wantErr: cli.ErrMaxInstructionLength,
+			wantErrs: []error{nil, nil, cli.ErrMaxInstructionLength},
+			want:     []string{},
+		},
+		{
+			name: "invalid command",
+			input: []string{
+				"5 3",
+				"1 1 E",
+				"S",
+			},
+			wantErrs: []error{nil, nil, cli.ErrInvalidCommand},
+			want:     []string{},
 		},
 	}
 
@@ -46,9 +57,11 @@ func TestMartianRobots(t *testing.T) {
 
 		cli := cli.CLI{}
 
-		for _, line := range tt.input {
-			if err := cli.ReadLine(line); err != tt.wantErr {
-				t.Fatalf("ReadLine() error got = %v, want %v", err, tt.wantErr)
+		for i, line := range tt.input {
+			if err := cli.ReadLine(line); err != nil {
+				if tt.wantErrs != nil && err != tt.wantErrs[i] {
+					t.Fatalf("ReadLine() error got = %v, want %v", err, tt.wantErrs[i])
+				}
 			}
 		}
 		got, err := cli.Output()
